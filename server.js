@@ -44,6 +44,34 @@ app.post("/employees", (req, res) => {
         });
     }
 
+    const workEmail  = req.body.contactInfo?.workEmail;
+
+if (workEmail  === null || workEmail  === undefined) {
+    return res.status(400).json({
+        message: "Work Email is required"
+    });
+}
+
+if (typeof workEmail  !== "string") {
+    return res.status(400).json({
+        message: "Work Email must be a string"
+    });
+}
+
+if (workEmail .trim() === "") {
+    return res.status(400).json({
+        message: "Work Email cannot be blank"
+    });
+}
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailRegex.test(workEmail )) {
+    return res.status(400).json({
+        message: "Invalid Work email format"
+    });
+}
+
     const salary = req.body.salary;
 
     if (salary === null || salary === undefined) {
@@ -69,6 +97,7 @@ app.post("/employees", (req, res) => {
             message: "Salary cannot exceed 200000"
         });
     }
+
 
     const employee = {
         ...req.body,
